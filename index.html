@@ -29,14 +29,15 @@
       overflow:hidden;
     }
 
-    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.95}
+    /* Corazones flotando */
+    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.95; filter: drop-shadow(0 6px 12px #00000055);}
     .heart{
       position:absolute; width:12px; height:12px; transform: rotate(45deg);
-      background: var(--pink1); border-radius: 3px; animation: floatUp linear infinite;
+      background: var(--pink1); border-radius: 3px; animation: floatUp linear infinite; opacity:.82;
     }
     .heart::before,.heart::after{content:""; position:absolute; width:12px; height:12px; background:inherit; border-radius:50%;}
-    .heart::before{left:-6px}
-    .heart::after{top:-6px}
+    .heart::before{left:-6px; top:0}
+    .heart::after{top:-6px; left:0}
     @keyframes floatUp{
       from{transform: translateY(20px) rotate(45deg); opacity:0}
       10%{opacity:.85}
@@ -51,6 +52,8 @@
       padding:22px 18px 18px;
       backdrop-filter: blur(10px);
       box-shadow: 0 18px 60px #00000055;
+      position:relative;
+      overflow:hidden;
     }
     .badge{
       display:inline-flex; gap:10px; align-items:center;
@@ -58,177 +61,325 @@
       border-radius:999px; background:#ffffff0d;
       color:var(--muted); font-size:13px;
     }
-    h1{margin:14px 0 8px; font-size:clamp(24px,3.6vw,38px)}
-    p{margin:0 0 14px; color:var(--muted); line-height:1.55}
-    .type{font-weight:800; min-height:28px}
+    h1{
+      margin:14px 0 8px;
+      font-size: clamp(24px, 3.6vw, 38px);
+      line-height:1.08;
+      letter-spacing:.2px;
+    }
+    p{
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height:1.55;
+      font-size: 15.8px;
+    }
+    .type{
+      min-height: 26px;
+      font-weight:900;
+      color:#fff;
+      margin-bottom:10px;
+    }
 
+    /* Botones seguros en celular: NO se superponen */
     .actions{
       margin-top:16px;
       display:flex;
       gap:12px;
       flex-wrap:wrap;
       justify-content:center;
+      padding: 8px 0 2px;
     }
     button{
-      padding:14px 16px;
-      border-radius:16px;
-      font-weight:900;
-      border:0;
+      border:0; padding: 12px 16px;
+      border-radius: 16px;
+      font-weight: 900;
       cursor:pointer;
-      width:min(260px,100%);
-      transition:.15s;
+      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+      user-select:none;
+      width: min(260px, 100%);
+      flex: 1 1 220px;
+      max-width: 320px;
     }
+    button:active{ transform: scale(.98); }
     .yes{
-      background:linear-gradient(135deg,var(--pink1),var(--pink2));
-      color:white;
+      background: linear-gradient(135deg, var(--pink1), var(--pink2));
+      color:#fff;
+      box-shadow: 0 12px 28px #ff4d8d40;
     }
+    .yes:hover{ filter:brightness(1.05); transform: translateY(-1px); }
     .no{
-      background:var(--btn2);
+      background: var(--btn2);
       border:1px solid var(--btn2Stroke);
-      color:white;
+      color:#fff;
+      box-shadow: 0 10px 26px #0000002d;
     }
 
-    @media(max-width:520px){
-      .actions{flex-direction:column}
+    .footer{
+      margin-top:14px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      color:#ffffffa8;
+      font-size:12.8px;
     }
 
-    .footer{margin-top:14px; font-size:12.5px; opacity:.8}
-
-    .overlay{position:fixed; inset:0; display:none; place-items:center; background:#050612cc}
-    .overlay.show{display:grid}
+    /* Overlay final (arreglado) */
+    .overlay{
+      position:fixed; inset:0; display:none; place-items:center;
+      background: #050612cc; backdrop-filter: blur(8px);
+      z-index: 10; padding: 18px;
+    }
+    .overlay.show{ display:grid; }
     .modal{
-      width:min(760px,96vw);
-      background:#ffffff14;
-      border-radius:26px;
-      padding:22px 18px;
-      border:1px solid #ffffff22;
+      width: min(720px, 94vw);
+      border-radius: 26px;
+      background: linear-gradient(180deg, #ffffff18, #ffffff10);
+      border: 1px solid #ffffff22;
+      box-shadow: 0 30px 90px #00000066;
+      padding: 22px 18px 20px;
       position:relative;
+      overflow:hidden;
     }
-    .close{position:absolute; top:12px; right:12px}
-    .chips{display:flex; gap:8px; flex-wrap:wrap}
+    .close{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      background:#ffffff14;
+      border:1px solid #ffffff2a;
+      color:#fff;
+      font-size:18px;
+      cursor:pointer;
+      padding:0;
+      min-width:auto;
+      flex: 0 0 auto;
+      display:grid;
+      place-items:center;
+    }
 
-    .toast{
-      position:fixed; bottom:18px; left:50%;
-      transform:translateX(-50%);
-      background:#0b0c16cc;
-      padding:10px 14px;
-      border-radius:14px;
-      display:none;
-      font-weight:700;
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin: 10px 0 2px;
     }
-    .toast.show{display:block}
+    .chip{
+      font-size:13px;
+      color:#fff;
+      background:#ffffff14;
+      border:1px solid #ffffff24;
+      padding:8px 10px;
+      border-radius:999px;
+    }
+
+    .tiny{font-size:12.5px; color:#ffffffa6; margin-top:10px;}
+
+    @media (max-width: 520px){
+      .actions{flex-direction:column; align-items:stretch;}
+      button{max-width: 100%;}
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: #0b0c16cc;
+      border: 1px solid #ffffff22;
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 50px #00000066;
+      display:none;
+      z-index: 11;
+      font-weight: 800;
+      font-size: 13px;
+      max-width: min(520px, 92vw);
+      text-align:center;
+    }
+    .toast.show{display:block;}
   </style>
 </head>
 
 <body>
+  <div class="hearts" id="hearts"></div>
 
-<div class="hearts" id="hearts"></div>
+  <div class="wrap">
+    <main class="card" aria-live="polite">
+      <div class="badge">💌 Para <b>Jelly 🐼</b> · <span id="today"></span></div>
 
-<div class="wrap">
-  <main class="card">
-    <div class="badge">💌 Para Jelly 🐼</div>
+      <h1>Tengo una pregunta seria… 🐵💘🐼</h1>
+      <div class="type" id="typeLine"></div>
 
-    <h1>Tengo una pregunta seria… 🐵💘🐼</h1>
-    <div class="type" id="typeLine">¿Quieres ser mi San Valentín?</div>
+      <p id="subtext">
+        No es una pregunta cualquiera, panda… es una de esas que quiero guardar con nosotros. 🐼✨
+      </p>
 
-    <p>No es cualquier pregunta… es una que quiero guardar contigo 🐼✨</p>
+      <div class="actions" id="actions">
+        <button class="yes" id="yesBtn">🐵💖 Sí, acepto</button>
+        <button class="no" id="noBtn">🐼🙈 No</button>
+      </div>
 
-    <div class="actions" id="actions">
-      <button class="yes" id="yesBtn">🐵💖 Sí, acepto</button>
-      <button class="no" id="noBtn">🐼🙈 No</button>
-    </div>
-
-    <div class="footer">Hecho con ❤️ por AJ 🐵</div>
-  </main>
-</div>
-
-<section class="overlay" id="overlay">
-  <div class="modal">
-    <button class="close" id="closeBtn">✕</button>
-    <h2>Jelly… me haces muy feliz 🐵💘🐼</h2>
-    <p>Gracias por decir que sí. Prometo cuidarte y hacerte reír siempre.</p>
-
-    <div class="chips">
-      <span>🍿 Cine</span>
-      <span>🍕 Comida rica</span>
-      <span>🌷 Tulipanes</span>
-      <span>📸 Fotos juntos</span>
-    </div>
-
-    <div class="actions" style="margin-top:14px">
-      <button class="yes" id="saveMomentBtn">💖 Guardar este momento</button>
-    </div>
+      <div class="footer">
+        <span>Hecho con ❤️ por AJ 🐵</span>
+        <span>para Jelly 🐼</span>
+      </div>
+    </main>
   </div>
-</section>
 
-<div class="toast" id="toast"></div>
+  <!-- FINAL (bonito y centrado) -->
+  <section class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Respuesta">
+    <div class="modal">
 
-<script>
-  // Corazones
-  const hearts = document.getElementById("hearts");
-  setInterval(()=>{
-    const h=document.createElement("div");
-    h.className="heart";
-    h.style.left=Math.random()*100+"vw";
-    h.style.bottom="-10px";
-    h.style.animationDuration=6+Math.random()*6+"s";
-    hearts.appendChild(h);
-    setTimeout(()=>h.remove(),8000);
-  },240);
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
+        <div class="badge">🎉 ¡Dijo que sí! 🐼💞🐵</div>
+        <button class="close" id="closeBtn" aria-label="Cerrar">✕</button>
+      </div>
 
-  // Interacciones NO (MUCHAS 😈💘)
-  const noMessages = [
-    "🐼 ¿Segura? Yo hice esto con cariño 🥺",
-    "🐼 Mmm… ese no sonó muy convencido 😌",
-    "🐼 ¿Y si lo pensamos juntos? 💭",
-    "🐼 Prometo portarme bien (a veces) 🐵",
-    "🐼 El botón de sí se ve bonito, ¿no? 👀",
-    "🐼 Ok… pero imagínanos riendo juntos 💫",
-    "🐼 Yo pongo la playlist 🎶",
-    "🐼 Y tú eliges la comida 🍕",
-    "🐼 ¿Trato justo? 🤝",
-    "🐼 Te debo un abrazo largo 🫶",
-    "🐼 Uno de esos que curan días malos 🥹",
-    "🐼 Ya casi me convences… digo, yo a ti 😏",
-    "🐼 Jellyyyy 🐼💗",
-    "🐼 El panda y el monito hacen buen equipo 🐼🐵",
-    "🐼 Spoiler: vamos a decir que sí 😌",
-    "🐼 Última oportunidad antes del destino 💫",
-    "🐼 Ok… me rindo (mentira) 😜",
-    "🐼 ¿Ves ese botón rosa? 💖",
-    "🐼 Ahí empieza algo bonito 🌷",
-    "🐼 Confía en nosotros 🐼🐵💘"
-  ];
+      <h2 style="margin:10px 0 8px; font-size: clamp(22px, 3.4vw, 34px); line-height:1.1;">
+        Jelly… me haces muy feliz 🐵💘🐼
+      </h2>
 
-  let noCount=0;
-  const noBtn=document.getElementById("noBtn");
-  const yesBtn=document.getElementById("yesBtn");
-  const actions=document.getElementById("actions");
+      <p style="margin-bottom:14px;">
+        Gracias por decir que sí. Prometo cuidarte, escucharte y hacerte reír siempre.
+        Elegirte es algo que hago con el corazón.
+      </p>
 
-  function teaseNo(){
-    noBtn.textContent = noMessages[Math.min(noCount,noMessages.length-1)];
-    noCount++;
-    yesBtn.style.transform=`scale(${1+noCount*0.03})`;
-    if(noCount%2) actions.insertBefore(noBtn,yesBtn);
-    else actions.insertBefore(yesBtn,noBtn);
-  }
+      <div class="chips" style="margin-bottom:18px;">
+        <span class="chip">🍿 Cine</span>
+        <span class="chip">🍕 Comida rica</span>
+        <span class="chip">🌷 Tulipanes</span>
+        <span class="chip">📸 Fotos juntos</span>
+        <span class="chip">🎶 Playlist</span>
+      </div>
 
-  noBtn.addEventListener("click",teaseNo);
-  noBtn.addEventListener("mouseenter",teaseNo);
+      <div style="display:flex; justify-content:center;">
+        <button class="yes" id="saveMomentBtn" style="max-width:320px;">
+          💖 Guardar este momento
+        </button>
+      </div>
 
-  // Final
-  const overlay=document.getElementById("overlay");
-  document.getElementById("yesBtn").onclick=()=>overlay.classList.add("show");
-  document.getElementById("closeBtn").onclick=()=>overlay.classList.remove("show");
+      <p class="tiny" style="text-align:center; margin-top:12px;">
+        Pista: este es uno de esos recuerdos que valen oro 🐼✨
+      </p>
+    </div>
+  </section>
 
-  // Captura
-  const toast=document.getElementById("toast");
-  document.getElementById("saveMomentBtn").onclick=()=>{
-    toast.textContent="📸 Presiona encendido + volumen para guardar este momento 💘";
-    toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"),5000);
-  };
-</script>
+  <div class="toast" id="toast"></div>
 
+  <script>
+    // Fecha bonita (Lima)
+    const now = new Date();
+    document.getElementById("today").textContent =
+      now.toLocaleDateString("es-PE", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
+
+    // Texto “máquina”
+    const typeEl = document.getElementById("typeLine");
+    const question = "¿Quieres ser mi San Valentín, Jelly? 🐼";
+
+    async function typeText(el, text, speed=32){
+      el.textContent = "";
+      for (let i=0; i<text.length; i++){
+        el.textContent += text[i];
+        await new Promise(r => setTimeout(r, speed));
+      }
+    }
+    (async () => { await typeText(typeEl, question, 30); })();
+
+    // Corazones flotando
+    const hearts = document.getElementById("hearts");
+    function spawnHeart(){
+      const h = document.createElement("div");
+      h.className = "heart";
+      const left = Math.random() * 100;
+      const size = 10 + Math.random() * 14;
+      const dur = 6 + Math.random() * 6;
+      h.style.left = left + "vw";
+      h.style.bottom = (-10 - Math.random()*20) + "px";
+      h.style.width = size + "px";
+      h.style.height = size + "px";
+      h.style.animationDuration = dur + "s";
+      const hue = 330 + Math.random() * 25;
+      h.style.background = `hsl(${hue} 100% 65%)`;
+      hearts.appendChild(h);
+      setTimeout(() => h.remove(), dur*1000);
+    }
+    setInterval(spawnHeart, 220);
+
+    // Botón NO (muchas interacciones, ordenadas)
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const actions = document.getElementById("actions");
+
+    const noMessages = [
+      "🐼 ¿Segura? Yo hice esto con cariño 🥺",
+      "🐼 Ese ‘no’ me dio cosquillitas en el corazón 😳",
+      "🐼 Ok, pero… mírame tantito 🐵👉👈",
+      "🐼 Si dices que no, el monito se pone triste 🐵🥺",
+      "🐼 Prometo portarme bien… (la mayoría del tiempo) 😇",
+      "🐼 ¿Y si lo pensamos con comida rica? 🍕😌",
+      "🐼 Yo pongo la playlist y tú eliges la canción 🎶🐼",
+      "🐼 Te debo un abrazo largo, de esos que curan 🫶",
+      "🐼 Oe panda… el botón rosa se ve hermoso 👀💖",
+      "🐼 Imagínate: cine, risas y tú ahí conmigo 🍿✨",
+      "🐼 Un ‘sí’ tuyo y me vuelvo el monito más feliz 🐵💘",
+      "🐼 Ok… me rindo (mentira) 😜",
+      "🐼 Jellyyyy 🐼💗 (con respeto, pero insistencia) 😌",
+      "🐼 El panda y el monito hacen buen equipo 🐼🐵",
+      "🐼 Spoiler: el destino está empujando al ‘sí’ 💫",
+      "🐼 ¿Y si este ‘sí’ lo guardamos para siempre? 🥹",
+      "🐼 Última oportunidad antes del abrazo sorpresa 😳🫶",
+      "🐼 Te juro que voy a cuidarte bonito 🌷",
+      "🐼 Dale… di que sí y yo digo ‘gracias’ mil veces 🥺",
+      "🐼 Ok, ok… tú ganas… (pero el ‘sí’ sigue esperando) 😌💖",
+      "🐼 Plot twist: tú querías decir ‘sí’ y tu dedo se confundió 😅",
+      "🐼 Ya, ahora sí: ¿sí? 🐵💘🐼"
+    ];
+    let noCount = 0;
+
+    function teaseNo(){
+      noBtn.textContent = noMessages[Math.min(noCount, noMessages.length-1)];
+      noCount++;
+
+      // hacer el "Sí" más tentador SIN romper el layout
+      const scale = 1 + Math.min(noCount, 10) * 0.035; // tope razonable
+      yesBtn.style.transform = `scale(${scale})`;
+
+      // alternar el orden (juego visual sin superposición)
+      if (noCount % 2 === 1) actions.insertBefore(noBtn, yesBtn);
+      else actions.insertBefore(yesBtn, noBtn);
+    }
+
+    noBtn.addEventListener("mouseenter", teaseNo);
+    noBtn.addEventListener("click", teaseNo);
+    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); teaseNo(); }, {passive:false});
+
+    // Modal final
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+    yesBtn.addEventListener("click", () => overlay.classList.add("show"));
+    closeBtn.addEventListener("click", () => overlay.classList.remove("show"));
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.classList.remove("show"); });
+
+    // Toast
+    const toast = document.getElementById("toast");
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=> toast.classList.remove("show"), 5200);
+    }
+    function isIOS(){
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+
+    // Guardar este momento (instrucciones para captura)
+    document.getElementById("saveMomentBtn").addEventListener("click", () => {
+      if (isIOS()){
+        showToast("📸 Para guardar este momento: botón lateral + subir volumen (iPhone) 🐼💘");
+      } else {
+        showToast("📸 Para guardar este momento: encendido + bajar volumen (Android) 🐼💘");
+      }
+    });
+  </script>
 </body>
 </html>
